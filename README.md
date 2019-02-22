@@ -5,3 +5,4 @@ I'm going to try to do this, it seems doable overall. If the thrust is a pedal i
 I'm going to work on this this weekend! 
 
 My plan: i'm going to try to get two joysticks working at once and then add in the thrust after. 
+I'll also upload the code I used on the arduino on my computer but to get the basic code the unojoy download has the bases of the code I used
