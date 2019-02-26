@@ -12,9 +12,26 @@ These instructions will get you a copy of the project up and running on your loc
 
 What things you need to install the software and how to install them
 
-```
-Clear View RC Simulator
-```
+
+* **ClearView RC Flight Simulator** - Download CelarView RC Flight Simulator from [their website](http://rcflightsim.com/).
+
+* **UnoJoy!** - UnoJoy! can be downloaded from [their github repository.](https://github.com/AlanChatham/UnoJoy)
+
+### Installation
+
+Once you have all of the software above downloaded you can continue onto these next steps.
+
+* Run the UnoJoyDriverInstaller.bat file to make sure that your drivers are up to date.
+
+* Put your arduino in DFU mode by shorting the 2 closest pins to the reset button.
+
+* Run the TurnIntoAJoystick.bat file.
+
+* Unplug and replug your arduino.
+
+* Open ClearView RC Flight Simulator, select settings, and select controller setup.
+
+* Select the arduino from the list of controllers and calibrate the device.
 
 ## Versioning
 
