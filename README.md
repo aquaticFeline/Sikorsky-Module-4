@@ -17,9 +17,13 @@ What things you need to install the software and how to install them
 
 * **UnoJoy!** - UnoJoy! can be downloaded from [their github repository.](https://github.com/AlanChatham/UnoJoy)
 
+* **FLIP** - FLIP can be downloaded from [its download page.](https://www.microchip.com/developmenttools/ProductDetails/FLIP)
+
 ### Installation
 
 Once you have all of the software above downloaded you can continue onto these next steps.
+
+* Run the FLIP Installer exe file.
 
 * Run the UnoJoyDriverInstaller.bat file to make sure that your drivers are up to date.
 
