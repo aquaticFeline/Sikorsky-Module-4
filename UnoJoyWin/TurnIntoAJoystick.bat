@@ -1,4 +1,4 @@
-@echo offs
+@echo off
 if not exist ATmega8u2Code/HexFiles/batchisp.exe (
 echo.
 echo The program used to flash the memory couldn't be found...
