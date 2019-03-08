@@ -16,10 +16,6 @@ float zvalueavg = 0;
 int center = 503; //yvalavg at no sticks moving
 int throttle = 0;
 
-void setup() { 
-  pinMode(3, OUTPUT);
-  setupUnoJoy();  
-} 
 
 void loop() { 
   dataForController_t controllerData = getControllerData();
