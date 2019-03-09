@@ -1,5 +1,5 @@
 /*
- * 3/5/19 So I got some math wrong for z value
+ * 3/8/19 So I got some math wrong for z value
  * but this should work in the serial port and
  * then clearview. i am working on implementing it
  * into clearview as of 8:14 pm EST
