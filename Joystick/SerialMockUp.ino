@@ -1,4 +1,8 @@
 /*
+ * 3/5/19 So I got some math wrong for z value
+ * but this should work in the serial port and
+ * then clearview. i am working on implementing it
+ * into clearview as of 8:14 pm EST
 3/3/19
 Turns out the joystick range error was due to voltage.
 This code has working x y and z  in the serial port.
@@ -14,6 +18,7 @@ float yvalueavg = 0;
 int zvalue1 = 0, zvalue2 = 0;
 float zvalueavg = 0;
 int center = 503; //yvalavg at no sticks moving
+int throttle = 0;
 
 void setup() { 
 pinMode(3, OUTPUT);  
@@ -46,19 +51,17 @@ Serial.println(yvalueavg);
 
 zvalue1 = yvalue1;
 zvalue2 = yvalue2;
-// want to take absolute value of center - zval
-//left down right up =0; left up right down = 1023. match this with if + in between.
+
 if (zvalue1 < 490 && zvalue2 > 510){
-  //should go towards negative. zvalueavg = 
-  zvalueavg = abs((((zvalue1+center)*2)+18)-zvalue2)-1;
+  zvalueavg =((1023-zvalue1)+zvalue2)/2;
 }
 else {
   zvalueavg = 512;
 }
 if (zvalue1 > 510 && zvalue2 < 490) {
-  //should go towards positive zvalueavg = 
-  zvalueavg = (zvalue1 +(((center-zvalue2)*2)+18))/2;
+  zvalueavg =((1023-zvalue1)+zvalue2)/2;
 }
+
 
 //Serial.print("Z1: ");  
 //Serial.print(zvalue1);
@@ -66,6 +69,9 @@ if (zvalue1 > 510 && zvalue2 < 490) {
 //Serial.println(zvalue2, DEC); 
 Serial.print("Zvalueavg: ");
 Serial.println(zvalueavg);
+
+throttle = analogRead(4);
+Serial.println(throttle);
 
 delay(1000);
 }
