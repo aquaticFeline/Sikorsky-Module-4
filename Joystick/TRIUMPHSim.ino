@@ -2,6 +2,7 @@
 #include "UnoJoy.h"
 
 /*
+3/9/19 - Works in clearview as intended! Changed throttle to max and 512 to yvalueavg in else statement
  * 3/8/19 - Should work in clearview? It is being tested
  * as of 8:18 pm EST
 3/5/19 Uploads to arduino. Throttle may be broken but i'd like to try
@@ -16,7 +17,7 @@ float yvalueavg = 0;
 int zvalue1 = 0, zvalue2 = 0;
 float zvalueavg = 0;
 int center = 503; //yvalavg at no sticks moving
-int throttle = 0;
+int throttle = 1023;
 
 void setup() { 
   pinMode(3, OUTPUT);
@@ -43,7 +44,7 @@ void loop() {
     zvalueavg =((1023-zvalue1)+zvalue2)/2;
   }
   else {
-    zvalueavg = 512;
+    zvalueavg = yvalueavg;
   }
   if (zvalue1 > 510 && zvalue2 < 490) {
     zvalueavg =((1023-zvalue1)+zvalue2)/2;
