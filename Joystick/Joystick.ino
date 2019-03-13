@@ -1,83 +1,94 @@
 
 #include "UnoJoy.h"
 
-// Define our pins
-int TrianglePin = 4;
-int SquarePin = 5;
-int CrossPin = 3;
-int CirclePin = 2;
-
-int r2Pin = 7;
-int r1Pin = 6;
-//l1Pin = A1;
-//l2Pin = A2;
+/*
+3/9/19 - Works in clearview as intended! Changed throttle to max and 512 to yvalueavg in else statement
+ * 3/8/19 - Should work in clearview? It is being tested
+ * as of 8:18 pm EST
+3/5/19 Uploads to arduino. Throttle may be broken but i'd like to try
+modifying clearview settings first
+*/
 
 
-int LeftPin = 8;
-int UpPin = 9;
-int RightPin = 10;
-int DownPin = 11;
+//Initialize Variables
+int sensorPin = 5; 
+int xvalue1 = 0, yvalue1 = 0;  
+int xvalueavg = 505;
+int xvalue2 = 0, yvalue2 = 0;
+int yvalueavg = 510;
+int zvalue1 = 0, zvalue2 = 0;
+int zvalueavg = 510;
+int center = 503; //yvalavg at no sticks moving
+int throttle = 1023;
 
-int StartPin =  12;
-//SelectPin = A3;
 
-void setup(){
-  setupPins();
-  setupUnoJoy();
-}
+//Setup Pins
+void setup() { 
+  pinMode(3, OUTPUT);
+  setupUnoJoy();  
+  //Serial.begin(9600);
+} 
 
-void loop(){
-  // Always be getting fresh data
+
+//Main calculation loop
+void loop() { 
   dataForController_t controllerData = getControllerData();
   setControllerData(controllerData);
-}
 
-void setupPins(void){
-  // Set all the digital pins as inputs
-  // with the pull-up enabled, except for the 
-  // two serial line pins
-  for (int i = 2; i <= 12; i++){
-    pinMode(i, INPUT);
-    digitalWrite(i, HIGH);
+  //Get x values from pins
+  xvalue1 = analogRead(A0);  
+  xvalue2 = analogRead(A2);
+  //Calculate X average
+  xvalueavg = ((xvalue1+xvalue2)/2);
+
+  //Get Y value from pins
+  yvalue1 = analogRead(A1);  
+  yvalue2 = analogRead(A3);
+  //Calculate Y average
+  yvalueavg = ((yvalue1+yvalue2)/2);
+
+  //Threshold for Y stick
+  if((abs((yvalue1 - yvalue2)) < 16) && (yvalueavg > 496 && yvalueavg < 536)) {
+    yvalueavg = 510;
   }
-  pinMode(A1, INPUT);
-  digitalWrite(A1, HIGH);
-  pinMode(A2, INPUT);
-  digitalWrite(A2, HIGH);
-   pinMode(A3, INPUT);
-  digitalWrite(A3, HIGH);
-}
 
+  //Threshold for X stick
+  if((abs((xvalue1 - xvalue2)) < 16) && (xvalueavg > 489 && xvalueavg < 521)) {
+    xvalueavg = 505;
+  }
+
+
+  //Calculate Z Rotations (YAW)
+  if(yvalue2 > 768 && yvalue1 < 256) {
+    zvalueavg = (abs(yvalue1) + abs(yvalue2)) - 1021;
+  } else if(yvalue2 < 256 && yvalue1 > 768) {
+     zvalueavg = (abs(yvalue1) + abs(yvalue2));
+  } else {
+    zvalueavg = 510;
+  }
+
+  
+
+  //Serial.println(zvalueavg);
+
+  throttle = 1000;
+
+  
+
+  
+  delay(100);
+}
 dataForController_t getControllerData(void){
-  
-  // Set up a place for our controller data
-  //  Use the getBlankDataForController() function, since
-  //  just declaring a fresh dataForController_t tends
-  //  to get you one filled with junk from other, random
-  //  values that were in those memory locations before
   dataForController_t controllerData = getBlankDataForController();
-  // Since our buttons are all held high and
-  //  pulled low when pressed, we use the "!"
-  //  operator to invert the readings from the pins
-  controllerData.triangleOn = !digitalRead(TrianglePin);
-  controllerData.circleOn = !digitalRead(CirclePin);
-  controllerData.squareOn = !digitalRead(SquarePin);
-  controllerData.crossOn = !digitalRead(CrossPin);
+ 
+  //Send data to Clearview
+  controllerData.leftStickY = (yvalueavg) >>2;
   
-  controllerData.r1On = !digitalRead(r1Pin);
-  controllerData.r2On = !digitalRead(r2Pin);
-  controllerData.l1On = !digitalRead(A1);
-  controllerData.l2On = !digitalRead(A2);
-  
-  
-  
-  controllerData.dpadUpOn = !digitalRead(UpPin);
-  controllerData.dpadDownOn = !digitalRead(DownPin);
-  controllerData.dpadLeftOn = !digitalRead(LeftPin);
-  controllerData.dpadRightOn = !digitalRead(RightPin);
-  
-  controllerData.startOn = !digitalRead(StartPin);
-  controllerData.selectOn = !digitalRead(A3);
+  controllerData.leftStickX = (xvalueavg) >>2;
+
+  controllerData.rightStickY = (zvalueavg) >>2;
+
+  controllerData.rightStickX = throttle >>2;
   
   // And return the data!
   return controllerData;
