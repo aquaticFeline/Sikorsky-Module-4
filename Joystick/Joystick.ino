@@ -13,12 +13,11 @@ modifying clearview settings first
 //Initialize Variables
 int sensorPin = 5; 
 int xvalue1 = 0, yvalue1 = 0;  
-int xvalueavg = 505;
+int xvalueavg = 510;
 int xvalue2 = 0, yvalue2 = 0;
 int yvalueavg = 510;
 int zvalue1 = 0, zvalue2 = 0;
 int zvalueavg = 510;
-int center = 503; //yvalavg at no sticks moving
 int throttle = 1023;
 
 
@@ -54,7 +53,7 @@ void loop() {
 
   //Threshold for X stick
   if((abs((xvalue1 - xvalue2)) < 16) && (xvalueavg > 489 && xvalueavg < 521)) {
-    xvalueavg = 505;
+    xvalueavg = 510;
   }
 
 
@@ -71,7 +70,7 @@ void loop() {
 
   //Serial.println(zvalueavg);
 
-  throttle = 1000;
+  throttle = analogRead(A4);
 
   
 
